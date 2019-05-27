@@ -37,14 +37,17 @@
         /// A model to place when a raycast from a user touch hits a plane.
         /// </summary>
         private GameObject prefab;
+    public GameObject WallPrefab;
 
     public GameObject ballPrefab;
 
     public GameObject PlayerPrefab;
 
+    public GameObject HolePrefab;
+
 
     public static int CurrentNumberOfGameObjects = 0;
-    private int numberOfGameObjectsAllowed = 2;
+    private int numberOfGameObjectsAllowed = 4;
 
     /// <summary>
     /// Manipulator prefab to attach placed objects to.
@@ -102,22 +105,44 @@
                 else
                 {
 
-                    //MA choose object to place
+                    //MA put wall
                     if (CurrentNumberOfGameObjects == 0)
                     {
-                        prefab = ballPrefab;
-                        var ballObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+
+                        var wallObject = Instantiate(WallPrefab, hit.Pose.position, hit.Pose.rotation);
+                        hit.Trackable.CreateAnchor(hit.Pose);
+                        wallObject.tag = "Wall";
+                        CurrentNumberOfGameObjects = CurrentNumberOfGameObjects + 1;
+                        wallObject.AddComponent<BallController>();
+
+
+                    }
+                    else if (CurrentNumberOfGameObjects == 1)
+                    {
+
+                        var holeObject = Instantiate(HolePrefab, hit.Pose.position, hit.Pose.rotation);
+                        hit.Trackable.CreateAnchor(hit.Pose);
+                        HolePrefab.tag = "Hole";
+                        CurrentNumberOfGameObjects = CurrentNumberOfGameObjects + 1;
+                        holeObject.AddComponent<HoleController>();
+                    }
+
+                    //MA choose object to place
+                    else if (CurrentNumberOfGameObjects == 2)
+                    {
+
+                        var ballObject = Instantiate(ballPrefab, hit.Pose.position, hit.Pose.rotation);
                         hit.Trackable.CreateAnchor(hit.Pose);
                         ballObject.tag = "Ball";
                         CurrentNumberOfGameObjects = CurrentNumberOfGameObjects + 1;
 
 
                     }
-                    else if (CurrentNumberOfGameObjects == 1)
+                    else if (CurrentNumberOfGameObjects == 3)
                     {
-                        prefab = PlayerPrefab;
+                       
                         // Instantiate Andy model at the hit pose.
-                        var PlayerObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+                        var PlayerObject = Instantiate(PlayerPrefab, hit.Pose.position, hit.Pose.rotation);
                        
                         // Instantiate manipulator.
                         var manipulator =
@@ -127,7 +152,7 @@
                         PlayerObject.transform.parent = manipulator.transform;
 
 
-                        PlayerObject.AddComponent<PlayerScript>();
+
 
                         // Create an anchor to allow ARCore to track the hitpoint as understanding of
                         // the physical world evolves.
@@ -138,6 +163,7 @@
 
                         // Select the placed object.
                         manipulator.GetComponent<Manipulator>().Select();
+                        PlayerObject.AddComponent<PlayerScript>();
                         CurrentNumberOfGameObjects = CurrentNumberOfGameObjects + 1;
                     }
 

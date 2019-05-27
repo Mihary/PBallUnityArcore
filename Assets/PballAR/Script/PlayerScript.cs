@@ -5,7 +5,7 @@ using GoogleARCore;
 using GoogleARCore.Examples.ObjectManipulation;
 using System;
 
-//[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 
 public class PlayerScript : MonoBehaviour
 {
@@ -42,23 +42,30 @@ public class PlayerScript : MonoBehaviour
 
     }*/
 
-     void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ball") 
+        if (collision.gameObject.tag == "Ball")
         {
-            //collision.gameObject.SetActive(false);
-            //var magnitude = 5000;
-           // calculate force vector
-           var direction = (collision.gameObject.transform.position - transform.position).normalized;
-           // normalize force vector to get direction only and trim magnitude
-           //Ball.GetComponent<Rigidbody>().AddForce(direction * magnitude);
-           var force = direction * speed;
-           //Ball.GetComponent<Rigidbody>().velocity = force;*/
+          
+            var direction = (collision.gameObject.transform.position - transform.position).normalized;
+            // normalize force vector to get direction only and trim magnitude
+            //Ball.GetComponent<Rigidbody>().AddForce(direction * magnitude);
+            var force = direction * speed;
+            //Ball.GetComponent<Rigidbody>().velocity = force;*/
             collision.gameObject.GetComponent<Rigidbody>().velocity = force;
 
         }
-    }
 
+
+        //Added by MA for collision with wall
+        else if (collision.gameObject.tag == "Wall")
+        {
+
+            var direction1 = (transform.position - collision.gameObject.transform.position).normalized;
+            var force1 = direction1 * speed;
+            collision.gameObject.GetComponent<Rigidbody>().velocity = force1 ;
+        }
+    }
 
 }
 
