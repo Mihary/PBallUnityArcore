@@ -108,7 +108,9 @@
                         prefab = ballPrefab;
                         var ballObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
                         hit.Trackable.CreateAnchor(hit.Pose);
+                        ballObject.tag = "Ball";
                         CurrentNumberOfGameObjects = CurrentNumberOfGameObjects + 1;
+
 
                     }
                     else if (CurrentNumberOfGameObjects == 1)
@@ -116,13 +118,16 @@
                         prefab = PlayerPrefab;
                         // Instantiate Andy model at the hit pose.
                         var PlayerObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
-
+                       
                         // Instantiate manipulator.
                         var manipulator =
                         Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);
 
                         // Make Andy model a child of the manipulator.
                         PlayerObject.transform.parent = manipulator.transform;
+
+
+                        PlayerObject.AddComponent<PlayerScript>();
 
                         // Create an anchor to allow ARCore to track the hitpoint as understanding of
                         // the physical world evolves.
