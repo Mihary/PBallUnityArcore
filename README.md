@@ -5,9 +5,9 @@ The project consists of creating an Augmented reality game with with Unity and A
 First at starting we have to touch on the screen and the app detects the planed surface in our environment.
 Once a surface is detected we should touch on a point on this to instanciate virtual components of the game on it
 The 2nd touch instantiates the area game with border
-The 3rd touch instantiates the ball which is our player
+The 3rd touch instantiates the hole 
 The 4th touch instantiates the second ball which we have to move to the hole
-The last toouch places the hole
+The last toouch places the ball which is our player
 
 To scale object except the surface , we can usethe pinch gesture
 After placing and scaling object, we can start the game by swiping the ballplayer in order to touch the ball. On collision 
